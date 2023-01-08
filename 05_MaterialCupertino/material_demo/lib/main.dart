@@ -73,6 +73,12 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     });
   }
 
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
   void showBottomSheet() {
     scaffoldKey.currentState?.showBottomSheet((context) => Container(
           height: 300,
@@ -119,51 +125,77 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: CircleAvatar(
-                radius: 100,
-                child: ClipOval(
-                  child: Image.network(
-                    'https://picsum.photos/200',
-                    loadingBuilder: (context, child, loadingProgress) {
-                      return loadingProgress == null ? child : const CircularProgressIndicator();
-                    },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32),
+          child: Column(
+            children: [
+              DrawerHeader(
+                child: CircleAvatar(
+                  radius: 100,
+                  child: ClipOval(
+                    child: Image.network(
+                      'https://picsum.photos/200',
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return loadingProgress == null ? child : const CircularProgressIndicator();
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            const ListTile(
-              leading: Icon(Icons.person),
-              trailing: Icon(Icons.arrow_forward_ios_sharp),
-              title: Text('Profile'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.motion_photos_on_rounded),
-              trailing: Icon(Icons.arrow_forward_ios_sharp),
-              title: Text('Images'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.document_scanner),
-              trailing: Icon(Icons.arrow_forward_ios_sharp),
-              title: Text('Files'),
-            ),
-          ],
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: const [
+                    ListTile(
+                      leading: Icon(Icons.person),
+                      trailing: Icon(Icons.arrow_forward_ios_sharp),
+                      title: Text('Profile'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.motion_photos_on_rounded),
+                      trailing: Icon(Icons.arrow_forward_ios_sharp),
+                      title: Text('Images'),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.document_scanner),
+                      trailing: Icon(Icons.arrow_forward_ios_sharp),
+                      title: Text('Files'),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    _DrawerButton('Выход'),
+                    _DrawerButton('Регистрация'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       endDrawer: Drawer(
-        child: Center(
-          child: CircleAvatar(
-            radius: 100,
-            child: ClipOval(
-              child: Image.network(
-                'https://picsum.photos/200',
-                loadingBuilder: (context, child, loadingProgress) {
-                  return loadingProgress == null ? child : const CircularProgressIndicator();
-                },
-              ),
+        child: UnconstrainedBox(
+          child: Center(
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 100,
+                  child: ClipOval(
+                    child: Image.network(
+                      'https://picsum.photos/200',
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return loadingProgress == null ? child : const CircularProgressIndicator();
+                      },
+                    ),
+                  ),
+                ),
+                const Text('Айтирали Кибербекович'),
+              ],
             ),
           ),
         ),
@@ -186,6 +218,24 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         onPressed: showBottomSheet,
         child: const Icon(Icons.info_outline),
       ),
+    );
+  }
+}
+
+class _DrawerButton extends StatelessWidget {
+  final String text;
+  const _DrawerButton(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        elevation: 1,
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.grey[300],
+      ),
+      child: Text(text),
     );
   }
 }
