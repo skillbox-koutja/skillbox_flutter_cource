@@ -26,18 +26,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static const searchBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+    borderSide: BorderSide(color: Colors.purple),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Text field styled'),
-      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(),
-          ],
+        child: Padding(
+          padding: EdgeInsets.all(20.0).copyWith(top: 64),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.search, color: Colors.purple),
+                  enabledBorder: searchBorder,
+                  focusedBorder: searchBorder,
+                  hintText: 'Введите значение',
+                  label: Text(
+                    'Search',
+                    style: TextStyle(color: Colors.purple),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12).copyWith(top: 8),
+                child: Text(
+                  'Поле для поиска заметок',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
