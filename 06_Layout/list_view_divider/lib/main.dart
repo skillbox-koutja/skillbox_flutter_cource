@@ -31,16 +31,17 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'List view divider',
-            ),
-          ],
-        ),
-      ),
+      body: ListView.separated(
+          itemCount: listData.length,
+          separatorBuilder: (BuildContext context, int index) => const Divider(
+                color: Colors.black,
+              ),
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+              child: Text('$index'),
+            );
+          }),
     );
   }
 }
