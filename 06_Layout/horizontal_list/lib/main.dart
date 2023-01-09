@@ -26,18 +26,59 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static const wideWidth = 500;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Horizontal list'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
-        ),
-      ),
+      body: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+        return constraints.maxWidth > wideWidth ? _WideList() : _NormalList();
+      }),
     );
+  }
+}
+
+class _NormalList extends StatelessWidget {
+  const _NormalList({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: GridView.builder(
+          itemCount: 9,
+          scrollDirection: Axis.horizontal,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 1,
+          ),
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                color: Colors.green[100 * (index + 1)],
+              ),
+            );
+          }),
+    );
+  }
+}
+
+class _WideList extends StatelessWidget {
+  const _WideList({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: 9,
+        scrollDirection: Axis.vertical,
+        itemExtent: 100,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              color: Colors.green[100 * (index + 1)],
+            ),
+          );
+        });
   }
 }
