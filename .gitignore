@@ -3,8 +3,20 @@
 .AppleDouble
 .LSOverride
 
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
