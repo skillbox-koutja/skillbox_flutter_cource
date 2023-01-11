@@ -1,7 +1,12 @@
+import 'package:albums_route/domain/artist/artist.dart';
+import 'package:albums_route/domain/artist/artists_fetcher.dart';
+import 'package:albums_route/ui/app/app_component.dart';
+import 'package:albums_route/ui/home/home_page.dart';
+import 'package:albums_route/ui/status_view/status_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(AppComponent());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,27 +25,28 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future<List<Artist>> fetchArtists = ArtistsFetcher().fetch();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Routes'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Routes',
-            ),
-          ],
-        ),
+      body: FutureBuilder<List<Artist>>(
+        future: fetchArtists, // a previously-obtained Future<String> or null
+        builder: (BuildContext context, AsyncSnapshot<List<Artist>> snapshot) {
+          if (snapshot.hasData) {
+            return HomePage();
+          } else if (snapshot.hasError) {
+            return ErrorStatusView(errorMessage: snapshot.error.toString());
+          }
+
+          return LoadingStatusView();
+        },
       ),
     );
   }
