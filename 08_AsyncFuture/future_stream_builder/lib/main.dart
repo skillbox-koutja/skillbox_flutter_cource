@@ -22,14 +22,15 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isRandonGenerated = false;
+  bool isRandomGenerated = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +45,29 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Text('Future builder'),
                 Center(
-                    //
-                    // TODO: FutureBuilder
-                    //
-                    ),
+                  child: FutureBuilder<String>(
+                    future: dataFuture(isRandomGenerated),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(snapshot.data ?? '');
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text(
+                          snapshot.error.toString(),
+                          style: TextStyle(
+                            color: Colors.red[300],
+                          ),
+                        );
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: LinearProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -58,10 +78,22 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Text('Stream builder'),
                 Center(
-                    //
-                    // TODO: StreamBuilder
-                    //
-                    ),
+                  child: StreamBuilder(
+                    stream: dataStream(100, isRandomGenerated),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text(
+                          snapshot.error.toString(),
+                          style: TextStyle(
+                            color: Colors.red[300],
+                          ),
+                        );
+                      }
+
+                      return Text(snapshot.data != null ? '${snapshot.data}' : 'start stream');
+                    },
+                  ),
+                ),
               ],
             ),
           )
@@ -70,7 +102,9 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // rebuild widget
-          setState(() {});
+          setState(() {
+            isRandomGenerated = !isRandomGenerated;
+          });
         },
         tooltip: 'Increment',
         child: Icon(Icons.play_arrow),
@@ -79,12 +113,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Stream<int> dataStream(int count) async* {
-  var random = Random();
+Stream<int> dataStream(int count, bool isRandomGenerated) async* {
+  if (!isRandomGenerated) {
+    throw 'Ошибка запуска генератора случайных чисел';
+  }
+
+  var random = Random(1000007);
   while (count > 0) {
     int rand = random.nextInt(100);
     if (rand < 20) {
-      throw 'Ошибка, число меньше 20';
+      throw 'Ошибка, число $rand меньше 20';
     } else {
       count = count - 1;
       await Future.delayed(Duration(seconds: 1));
@@ -93,10 +131,10 @@ Stream<int> dataStream(int count) async* {
   }
 }
 
-Future<String> dataFuture() async {
-  var random = Random();
+Future<String> dataFuture(bool isRandomGenerated) async {
   final response = await Future.delayed(Duration(seconds: 1), () {
-    final isSuccess = random.nextBool();
+    var random = Random(1000007).nextBool();
+    final isSuccess = isRandomGenerated ? random : !random;
     return isSuccess;
   });
   if (response) {
