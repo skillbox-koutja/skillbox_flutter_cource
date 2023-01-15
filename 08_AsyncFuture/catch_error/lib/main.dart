@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+  MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -36,19 +36,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: FutureBuilder<String>(
         future: fetchFileFromAssets('assets/somefile.txt'),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               return Center(
                 child: Text('NONE'),
               );
-              break;
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator());
-              break;
             case ConnectionState.done:
-              return SingleChildScrollView(child: Text(snapshot.data));
-              break;
+              if (snapshot.hasError) {
+                return SingleChildScrollView(child: Text('файл не найден'));
+              }
+
+              return SingleChildScrollView(child: Text(snapshot.data ?? ''));
             default:
               return SingleChildScrollView(
                 child: Text('Default'),
