@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:testing/utils/validate_email.dart';
 
 class LoginForm extends StatefulWidget {
-  LoginForm({Key key}) : super(key: key);
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -21,39 +21,42 @@ class _LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             validator: (value) {
-              if (value == '') return 'Введите email';
-              if (!validateEmail(value))
-                return 'Поле email заполнено не корректно';
+              if (value == null || value.isEmpty) return 'Введите email';
+              if (!validateEmail(value)) return 'Поле email заполнено не корректно';
+
               return null;
             },
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
           TextFormField(
             validator: (value) {
               if (value == '') return 'Введите телефон';
+
               return null;
             },
-            decoration: InputDecoration(labelText: 'Phone'),
+            decoration: const InputDecoration(labelText: 'Phone'),
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
-          RaisedButton(
-            child: Text('Отправить'),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                setState(() {
-                  successMessage = true;
-                });
-              }
-            },
+          ElevatedButton(
+            child: const Text('Отправить'),
+            onPressed: _handleSubmit,
           ),
-          if (successMessage) Text('Добро пожаловать'),
+          if (successMessage) const Text('Добро пожаловать'),
         ],
       ),
     );
+  }
+
+  void _handleSubmit() {
+    final formState = _formKey.currentState;
+
+    if (formState != null && formState.validate()) {
+      formState.save();
+      setState(() {
+        successMessage = true;
+      });
+    }
   }
 }

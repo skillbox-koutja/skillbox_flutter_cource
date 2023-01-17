@@ -5,7 +5,7 @@ import 'package:testing/components/register_form.dart';
 enum FormType { login, register }
 
 class LoginView extends StatefulWidget {
-  LoginView({Key key}) : super(key: key);
+  const LoginView({Key? key}) : super(key: key);
 
   @override
   _LoginViewState createState() => _LoginViewState();
@@ -13,13 +13,6 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   FormType _formType = FormType.login;
-
-  _switchForm() {
-    setState(() {
-      _formType =
-          _formType == FormType.login ? FormType.register : FormType.login;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +35,7 @@ class _LoginViewState extends State<LoginView> {
                           textAlign: TextAlign.start,
                         ),
                       ),
-                      _formType == FormType.login
-                          ? LoginForm()
-                          : RegisterForm(),
+                      if (_formType == FormType.login) const LoginForm() else const RegisterForm(),
                     ],
                   ),
                 ),
@@ -52,19 +43,18 @@ class _LoginViewState extends State<LoginView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _formType == FormType.login
-                          ? 'Уже есть аккаунт?'
-                          : 'Еще нет аккаунта? ',
+                      _formType == FormType.login ? 'Уже есть аккаунт?' : 'Еще нет аккаунта? ',
                     ),
-                    FlatButton(
+                    ElevatedButton(
                       child: RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-                            text: _formType == FormType.login
-                                ? 'Войти'
-                                : 'Регистрация',
-                          )
-                        ], style: Theme.of(context).textTheme.bodyText1),
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: _formType == FormType.login ? 'Войти' : 'Регистрация',
+                            ),
+                          ],
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
                       onPressed: _switchForm,
                     ),
@@ -76,5 +66,11 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  void _switchForm() {
+    setState(() {
+      _formType = _formType == FormType.login ? FormType.register : FormType.login;
+    });
   }
 }
