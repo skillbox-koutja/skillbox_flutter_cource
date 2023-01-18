@@ -2,7 +2,7 @@ bool validateEmail(String value) {
   const pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   final regex = RegExp(pattern);
-  final hasMatch = regex.hasMatch(value);
+  final isValid = regex.hasMatch(value);
 
-  return !hasMatch;
+  return isValid;
 }

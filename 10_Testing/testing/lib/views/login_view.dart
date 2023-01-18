@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing/assets/messages.dart';
 import 'package:testing/components/login_form.dart';
 import 'package:testing/components/register_form.dart';
 
@@ -30,7 +31,7 @@ class _LoginViewState extends State<LoginView> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          _formType == FormType.login ? 'Вход' : 'Регистрация',
+                          _formType == FormType.login ? AppMessages.login : AppMessages.signUp,
                           style: Theme.of(context).textTheme.headline4,
                           textAlign: TextAlign.start,
                         ),
@@ -43,14 +44,14 @@ class _LoginViewState extends State<LoginView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _formType == FormType.login ? 'Уже есть аккаунт?' : 'Еще нет аккаунта? ',
+                      _formType == FormType.login ? AppMessages.gotoSignUpTitle : AppMessages.gotoLoginTitle,
                     ),
                     ElevatedButton(
                       child: RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: _formType == FormType.login ? 'Войти' : 'Регистрация',
+                              text: _formType == FormType.login ? AppMessages.signUp : AppMessages.login,
                             ),
                           ],
                           style: Theme.of(context).textTheme.bodyText1,

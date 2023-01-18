@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:testing/assets/messages.dart';
 import 'package:testing/utils/validate_email.dart';
 
 class LoginForm extends StatefulWidget {
@@ -21,29 +22,29 @@ class _LoginFormState extends State<LoginForm> {
         children: <Widget>[
           TextFormField(
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Введите email';
-              if (!validateEmail(value)) return 'Поле email заполнено не корректно';
+              if (value == null || value.isEmpty) return AppMessages.emptyEmailMessage;
+              if (!validateEmail(value)) return AppMessages.incorrectEmailMessage;
 
               return null;
             },
             keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: AppMessages.email),
           ),
           TextFormField(
             validator: (value) {
-              if (value == '') return 'Введите телефон';
+              if (value == '') return AppMessages.emptyPhoneMessage;
 
               return null;
             },
-            decoration: const InputDecoration(labelText: 'Phone'),
+            decoration: const InputDecoration(labelText: AppMessages.phone),
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           ),
           ElevatedButton(
-            child: const Text('Отправить'),
+            child: const Text(AppMessages.submit),
             onPressed: _handleSubmit,
           ),
-          if (successMessage) const Text('Добро пожаловать'),
+          if (successMessage) const Text(AppMessages.successLogin),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:testing/assets/messages.dart';
 import 'package:testing/utils/validate_email.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -20,17 +21,17 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(
         children: [
           TextFormField(
-            decoration: const InputDecoration(labelText: 'First name'),
+            decoration: const InputDecoration(labelText: AppMessages.firstName),
             validator: (value) {
-              if (value == '') return 'Введите имя';
+              if (value == '') return AppMessages.emptyFirstNameMessage;
 
               return null;
             },
           ),
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Last name'),
+            decoration: const InputDecoration(labelText: AppMessages.lastName),
             validator: (value) {
-              if (value == '') return 'Введите фамилию';
+              if (value == '') return AppMessages.emptyLastNameMessage;
 
               return null;
             },
@@ -38,27 +39,27 @@ class _RegisterFormState extends State<RegisterForm> {
           TextFormField(
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(labelText: 'Phone'),
+            decoration: const InputDecoration(labelText: AppMessages.phone),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Заполните поле телефон';
+              if (value == null || value.isEmpty) return AppMessages.emptyPhoneMessage;
 
               return null;
             },
           ),
           TextFormField(
-            decoration: const InputDecoration(labelText: 'Email'),
+            decoration: const InputDecoration(labelText: AppMessages.email),
             validator: (value) {
-              if (value == null || value.isEmpty) return 'Заполните поле email';
-              if (!validateEmail(value)) return 'Email не корректный';
+              if (value == null || value.isEmpty) return AppMessages.emptyEmailMessage;
+              if (!validateEmail(value)) return AppMessages.incorrectEmailMessage;
 
               return null;
             },
           ),
           ElevatedButton(
-            child: const Text('Отправить'),
+            child: const Text(AppMessages.submit),
             onPressed: _handleSubmit,
           ),
-          if (_isSuccess) const Text('Вы успешно зарегистрировались'),
+          if (_isSuccess) const Text(AppMessages.successSignUp),
         ],
       ),
     );
