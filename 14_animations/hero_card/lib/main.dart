@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hero_card/details_screen.dart';
 import 'package:hero_card/space.dart';
 
 void main() {
@@ -38,48 +39,74 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.black54,
         title: Text(widget.title),
       ),
-      body: GridView.count(crossAxisCount: 2, children: [
-        for (final space in spaces)
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
+      body: GridView.count(
+        crossAxisCount: 2,
+        children: [
+          for (final space in spaces)
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<DetailsScreen>(
+                    builder: (context) {
+                      return DetailsScreen(space: space);
+                    },
+                  ),
+                );
+              },
+              child: Card(
+                color: Colors.grey.shade400,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
                   children: [
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ), // Image border
-                      child: Image.asset(space.image, fit: BoxFit.cover),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Hero(
+                          tag: '${space.id}:image',
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ), // Image border
+                            child: Image.asset(space.image, fit: BoxFit.cover),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -16,
+                          right: 16,
+                          child: Hero(
+                            tag: '${space.id}:button',
+                            child: ColoredBox(
+                              color: Colors.orangeAccent,
+                              child: SizedBox.fromSize(
+                                size: const Size.fromRadius(16),
+                                child: const Icon(Icons.add),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      bottom: -16,
-                      right: 16,
-                      child: ColoredBox(
-                        color: Colors.orangeAccent,
-                        child: SizedBox.fromSize(
-                          size: const Size.fromRadius(16),
-                          child: const Icon(Icons.add),
+                    Hero(
+                      tag: '${space.id}:description',
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            space.description,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    space.description,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-      ]),
+        ],
+      ),
     );
   }
 }
