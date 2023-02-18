@@ -10,9 +10,9 @@
 .idea/
 
 # Visual Studio Code related
-.vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
+13_theme/app_theme/.vscode/
+!13_theme/app_theme/.vscode/settings.json
+!13_theme/app_theme/.vscode/tasks.json
 
 # Icon must end with two \r
 Icon
