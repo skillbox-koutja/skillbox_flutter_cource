@@ -137,6 +137,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
                   children: List.generate(
                     8,
                     (index) => Card(
@@ -197,9 +199,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       },
                     );
                   },
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 40,
                     child: Text('AB'),
+                    backgroundColor: Theme.of(context).primaryColor,
+                    foregroundColor: Colors.white,
                   ),
                 ),
               ],
