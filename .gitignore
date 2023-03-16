@@ -36,3 +36,11 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# firebase
+/11_firebase/firebase_project/android/app/google-services.json
+/11_firebase/firebase_project/ios/Runner/GoogleService-Info.plist
+/11_firebase/firebase_project/ios/firebase_app_id_file.json
+/11_firebase/firebase_project/lib/firebase_options.dart
+/11_firebase/firebase_project/macos/Runner/GoogleService-Info.plist
+/11_firebase/firebase_project/macos/firebase_app_id_file.json
